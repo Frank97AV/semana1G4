@@ -11,4 +11,10 @@ public interface UsuariosService {
     List<UsuariosEntity> getAllUsuarios();
 
     UsuariosEntity buscarPorId(Integer id);
+
+    List<UsuariosEntity> buscarPorNombre(String nombres);
+
+    UsuariosEntity updateUsuario(Long id, UsuariosEntity request);
+    UsuariosEntity deleteUusuario(Long id);
+
 }

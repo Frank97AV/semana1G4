@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.filter.RequestContextFilter;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class UsuariosController {
     @Qualifier("usuariosServiceImpl2")
     @Autowired
     private UsuariosService usuariosService2;
+    @Autowired
+    private RequestContextFilter requestContextFilter;
 
     /*api/v1/g4/crearusuario*/
     //Metodo de tipo post
@@ -46,8 +49,27 @@ public class UsuariosController {
     //GET : DEVUELVE UNA INFORMACION
     @GetMapping("/buscarxid/{id}")
     public ResponseEntity<UsuariosEntity>  buscarxid(@PathVariable Integer id){
-        UsuariosEntity usuario = usuariosService.buscarPorId(id);
-        return ResponseEntity.ok(usuario);
+        UsuariosEntity usuariosEntity = usuariosService.buscarPorId(id);
+        return ResponseEntity.ok(usuariosEntity);
     }
 
+    //YO COMO USUARIO , REQUIERO UN ENDPOINT QUE ME DEVUELVA LA LISTA DE USUARIOS QUE EXISTAN POR UN NOMBRE,
+    // PARA PODER INDENTIFICAR A LOS USUARIOS MEDIANTE SU NOMBRE
+    @GetMapping("/buscarxnombres/{nombres}")
+    public ResponseEntity<List<UsuariosEntity>> buscarPorNombres(@PathVariable String nombres){
+        List<UsuariosEntity> usuariosEntity = usuariosService2.buscarPorNombre(nombres);
+        return ResponseEntity.ok(usuariosEntity);
+    }
+
+    @PutMapping("/updateusuario/{id}")
+    public ResponseEntity<UsuariosEntity> actualizar(@PathVariable Long id, @RequestBody UsuariosEntity entity){
+        UsuariosEntity usuariosEntity = usuariosService2.updateUsuario(id,entity);
+        return ResponseEntity.ok(usuariosEntity);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<UsuariosEntity> delete(@PathVariable Long id){
+        UsuariosEntity usuariosEntity = usuariosService2.deleteUusuario(id);
+        return ResponseEntity.ok(usuariosEntity);
+    }
 }
